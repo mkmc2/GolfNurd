@@ -1,13 +1,17 @@
 {
   "expo": {
-    "name": "CaddieApp",
-    "slug": "CaddieApp",
+    "name": "ClubCaddie",
+    "slug": "ClubCaddie",
     "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/Icon_splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -24,7 +28,7 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/Icon_splash.png"
     }
   }
 }
