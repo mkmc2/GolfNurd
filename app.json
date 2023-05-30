@@ -8,7 +8,7 @@
       "android"
     ],
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Icon_splash.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/Icon_splash.png",

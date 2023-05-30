@@ -6,7 +6,9 @@ export const ClubPickerScreen = ({ shotWeightedAverage }) => {
 
     // Add into the code if a distance is further than you can reach, suggest two clubs to hit to get to that spot. 
 
-    const [distance, setDistance] = useState('0');
+    const [distance, setDistance] = useState("0");
+
+    // Create a function that says if distance === driver100
     return (
         <SafeAreaView style={mainStyles.container}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

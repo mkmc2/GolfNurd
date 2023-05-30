@@ -52,6 +52,7 @@ const mainStyles = StyleSheet.create({
         paddingBottom: 5,
     },
     listRow: {
+        // backgroundColor: 'white',
         backgroundColor: '#eee',
         padding: 10,
         marginBottom: 15,

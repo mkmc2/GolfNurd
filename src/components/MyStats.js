@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, SafeAreaView, FlatList, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import PickerSelect from 'react-native-picker-select';
 // import Picker from 'react-native-picker';
@@ -16,6 +16,8 @@ export const MyStatsScreen = ({
     setSelectedValue,
     selectedPower,
     setSelectedPower,
+    selectedLabel,
+    setSelectedLabel,
     clubsInMyBag,
     clubsInMyBag2,
     // handleButtonPressToAddShot,
@@ -51,6 +53,8 @@ export const MyStatsScreen = ({
     setFifty8Wedge100, setFifty8Wedge75, setFifty8Wedge50, setFifty8Wedge25,
     setSixtyWedge100, setSixtyWedge75, setSixtyWedge50, setSixtyWedge25
 }) => {
+
+    // const [shotTypeDropdownList, setShotTypeDropdownList] = useState([]);
 
     function renderDriverData({ item }) {
         return (
@@ -107,7 +111,7 @@ export const MyStatsScreen = ({
         ));
     }
 
-    const ShotData = (clubSelected, selectedPower) => {
+    const ShotData = (clubSelected, selectedPower, selectedLabel) => {
         // Woods
         if (clubSelected === 'Driver' && selectedPower === 100) {
             const shotArray = driver100;
@@ -943,7 +947,74 @@ export const MyStatsScreen = ({
         }
     };
 
+    const shotTypeList = () => {
+        if (clubSelected === 'Driver') {
+            return [
+                { label: "Full Swing", value: 100 },
+                { label: "Fairway Finder", value: 75 },
+            ];
+        }
+        else if (clubSelected === '3 Wood' || clubSelected === '5 Wood' || clubSelected === '7 Wood') {
+            return [
+                { label: "Full Swing", value: 100 },
+                { label: "Easy Swing", value: 75 },
+            ];
+        }
+        else if (clubSelected === '2 Hybrid' || clubSelected === '3 Hybrid' || clubSelected === '4 Hybrid' || clubSelected === '5 Hybrid' || clubSelected === '6 Hybrid' || clubSelected === '7 Hybrid') {
+            return [
+                { label: "Full Swing", value: 100 },
+                { label: "Easy Swing", value: 75 },
+            ];
+        }
+        else if (clubSelected === '2 Iron' || clubSelected === '3 Iron' || clubSelected === '4 Iron' || clubSelected === '5 Iron' || clubSelected === '6 Iron' || clubSelected === '7 Iron' || clubSelected === '8 Iron' || clubSelected === '9 Iron') {
+            return [
+                { label: "Full Swing", value: 100 },
+                { label: "Easy Swing", value: 75 },
+                { label: "Punch Shot", value: 50 },
+            ];
+        }
+        else if (clubSelected === 'PW' || clubSelected === '48 Wedge' || clubSelected === '50 Wedge' || clubSelected === '52 Wedge' || clubSelected === '54 Wedge' || clubSelected === '56 Wedge' || clubSelected === '58 Wedge' || clubSelected === '60 Wedge') {
+            return [
+                { label: "Full Shot", value: 100 },
+                { label: "3/4 Swing", value: 75 },
+                { label: "Half Swing", value: 50 },
+                { label: "Quarter Swing", value: 25 },
+            ];
+        }
+        else
+            return [
+                { label: "Full Shot", value: 100 },
+                { label: "3/4 Swing", value: 75 },
+                { label: "Half Swing", value: 50 },
+                { label: "Quarter Swing", value: 25 },
+            ]
+    };
 
+    shotTypeDropdownList = shotTypeList();
+
+    const handleValueChange = (value) => {
+        setSelectedPower(value);
+        const selected = shotTypeList().find(item => item.value === value);
+        setSelectedLabel(selected ? selected.label : '');
+    };
+    // const handleValueChange = (value) => {
+    //     setSelectedPower(value);
+    //     const selected = shotTypeList().find(item => item.value === value);
+    //     setSelectedLabel(selected.label || '');
+    // };
+
+    const resetPicker = () => {
+        setSelectedPower(null);
+        setSelectedLabel('');
+    };
+
+    const renderClubSelectedText = () => {
+        if (clubSelected) {
+            return <Text> | </Text>;
+        } else {
+            return null;
+        }
+    };
 
     return (
         <SafeAreaView style={mainStyles.container}>
@@ -965,7 +1036,8 @@ export const MyStatsScreen = ({
                                             <PickerSelect
                                                 onValueChange={(value) => {
                                                     setClubSelected(value);
-                                                    console.log(value);
+                                                    // console.log(value);
+                                                    resetPicker();
                                                 }}
                                                 items={clubsInMyBag2
                                                     .filter((club) => club.status === "active")
@@ -982,31 +1054,27 @@ export const MyStatsScreen = ({
                         <View style={{ flexDirection: 'row', paddingVertical: 5 }}>
                             <View style={{ flex: 1, flexDirection: 'row', alignItems: "center", justifyContent: "space-between", }}>
                                 <View>
-                                    <Text style={[mainStyles.header1, { paddingRight: 5 }]}>Power:</Text>
-                                    <Text style={mainStyles.mdText}>Select your swing power</Text>
+                                    <Text style={[mainStyles.header1, { paddingRight: 5 }]}>Shot Type:</Text>
+                                    <Text style={mainStyles.mdText}>Select what kind of shot you're hitting</Text>
                                 </View>
                                 <View style={mainStyles.inputBackground}>
                                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 10, }}>
                                         <View style={{ fontSize: 20, fontWeight: "800", }}>
                                             <PickerSelect
-                                                // onValueChange={(value) => setSelectedPower(value)}
-                                                onValueChange={(value) => {
-                                                    setSelectedPower(value);
-                                                    console.log(value);
-                                                }}
-                                                items={[
-                                                    { label: "100% Power", value: 100 },
-                                                    { label: "75% Power", value: 75 },
-                                                    { label: "50% Power", value: 50 },
-                                                    { label: "25% Power", value: 25 },
-                                                ]}
+                                                // onValueChange={(value) => {
+                                                //     setSelectedPower(value);
+                                                //     console.log(value);
+                                                // }}
+                                                onValueChange={handleValueChange}
+                                                // items={[
+                                                //     { label: "100% Power", value: 100 },
+                                                //     { label: "75% Power", value: 75 },
+                                                //     { label: "50% Power", value: 50 },
+                                                //     { label: "25% Power", value: 25 },
+                                                // ]}
+                                                items={shotTypeDropdownList}
                                                 value={selectedPower}
                                             />
-                                            {/* <PickerSelect
-                                            onValueChange={(value) => setSelectedPower(value)}
-                                            items={clubsInMyBag.map((club) => ({ label: club.club, value: club.club }))}
-                                            value={selectedPower}
-                                        /> */}
                                         </View>
                                         {/* <Feather style={{ paddingLeft: 5 }} name="arrow-down-circle" size={24} color="black" /> */}
                                     </View>
@@ -1019,7 +1087,7 @@ export const MyStatsScreen = ({
                                     <Text style={[mainStyles.header1, { paddingRight: 5 }]}>Enter Distance:</Text>
                                     <Text style={mainStyles.mdText}>Enter the distance and click the plus button</Text>
                                 </View>
-                                <View style={{ flexDirection: "row", alignItems: 'center', }}>
+                                <View style={{ flexDirection: "row", alignItems: 'center', paddingVertical: 5, }}>
                                     <View style={mainStyles.inputBackground}>
                                         <View style={{ flexDirection: 'row', alignItems: "center", paddingHorizontal: 5, }}>
                                             <TextInput
@@ -1052,8 +1120,16 @@ export const MyStatsScreen = ({
                         </View>
                     </View>
                     <View style={{ flex: 6, }}>
-                        <View>
-                            <Text style={mainStyles.header1}>Shot Stats for: {clubSelected} ({selectedPower}%)</Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#707070', paddingBottom: 5, }}>
+                            <View>
+                                <Text style={mainStyles.header3}>Shot Stats for:</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={mainStyles.header2}>{clubSelected}</Text>
+                                {renderClubSelectedText()}
+                                <Text style={mainStyles.header2}>{selectedLabel}</Text>
+                                {/* <Text style={mainStyles.header3}>Shot Type: {selectedLabel}</Text> */}
+                            </View>
                         </View>
                         <View style={{ paddingVertical: 10, }}>
                             <FlatList

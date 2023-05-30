@@ -408,6 +408,7 @@ function HomeTabs() {
     const [distance, setDistance] = useState(0);
     const [selectedValue, setSelectedValue] = useState("option1");
     const [selectedPower, setSelectedPower] = useState('');
+    const [selectedLabel, setSelectedLabel] = useState('');
     const [newShotDistance, setNewShotDistance] = useState("");
     const [shotArray, setShotArray] = useState([])
     // Profile State
@@ -590,14 +591,25 @@ function HomeTabs() {
         // Averages
     } = useCustomState();
 
-    const shotWeightedAverage = () => {
-        const shotArrayUsed = driver100;
-        const shotAverage =
-            ((shotArrayUsed[0] * 10) + (shotArrayUsed[1] * 10) + (shotArrayUsed[2] * 10) + (shotArrayUsed[3] * 10)) /
-            (10 + 10 + 10 + 10);
+    // const shotWeightedAverage = (arrayUsed) => {
+    //     const shotArrayUsed = arrayUsed;
+    //     const shotAverage =
+    //         ((shotArrayUsed[0] * 10) + (shotArrayUsed[1] * 10) + (shotArrayUsed[2] * 10) + (shotArrayUsed[3] * 10)) /
+    //         (10 + 10 + 10 + 10);
 
-        return shotAverage;
-    }
+    //     return shotAverage;
+    // }
+    // const shotWeightedAverage = (arrayUsed) => {
+    //     const shotArrayUsed = arrayUsed;
+    //     return (shotArrayUsed[0] * 10) + (shotArrayUsed[1] * 10) + (shotArrayUsed[2] * 10) + (shotArrayUsed[3] * 10)) /
+    //         (10 + 10 + 10 + 10);
+    // };
+    const shotWeightedAverage = (arrayUsed) => {
+        const shotArrayUsed = arrayUsed;
+        const numerator = (shotArrayUsed[0] * 10) + (shotArrayUsed[1] * 10) + (shotArrayUsed[2] * 10) + (shotArrayUsed[3] * 10);
+        const denominator = 10 + 10 + 10 + 10;
+        return Math.round(numerator / denominator);
+    };
     const shotWeightedAverageTest = ({ driver100 }) => {
         const shotAverage =
             ((driver100[0] * 10) + (driver100[1] * 10) + (driver100[2] * 10) + (driver100[3] * 10)) /
@@ -605,56 +617,8 @@ function HomeTabs() {
         return shotAverage;
     }
 
-    // const calculateAverage = (selectedShotArray) => {
-    //     const sum = selectedShotArray.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    //     const average = sum / selectedShotArray.length;
-    //     return average;
-    // };
+    const driver100Average = ((driver100[0] + driver100[1] + driver100[2]) / 3)
 
-    // const shotAverages = () => {
-    //     const selectedShotArray = driver100;
-
-    //     // driver100 need to be a variable (possibly from another function) that input the array of correct shot. 
-
-    //     function weightedAverage() {
-    //         return (
-    //             ((selectedShotArray[0] * 10) + (selectedShotArray[1] * 10) + (selectedShotArray[2] * 10) + (selectedShotArray[3] * 10) +
-    //                 (selectedShotArray[4] * 10) + (selectedShotArray[5] * 10) + (selectedShotArray[6] * 10) + (selectedShotArray[7] * 10) +
-    //                 (selectedShotArray[8] * 10) + (selectedShotArray[9] * 10) + (selectedShotArray[10] * 10) +
-    //                 (selectedShotArray[11] * 6) + (selectedShotArray[12] * 6) + (selectedShotArray[13] * 6) +
-    //                 (selectedShotArray[14] * 6) + (selectedShotArray[15] * 6) + (selectedShotArray[16] * 6) +
-    //                 (selectedShotArray[17] * 6) + (selectedShotArray[18] * 6) + (selectedShotArray[19] * 6) + (selectedShotArray[20] * 6)
-    //             ) /
-    //             (10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 6 + 6 + 6 + 6 + 6 + 6 + 6 + 6 + 6 + 6)
-    //         );
-    //     }
-
-    //     return {
-    //         weightedAverage,
-    //         calculateAverage,
-    //     };
-    // };
-
-    //   export default shotAverages;
-
-    // const calculateAverage = () => {
-    //     // const selectedShotArray = driver100;
-    //     const sum = selectedShotArray.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    //     const average = sum / selectedShotArray.length;
-    //     return average;
-    // };
-    // function weightedAverage() {
-    //     return (
-    //         ((selectedShotArray[0] * 10) + (selectedShotArray[1] * 10) + (selectedShotArray[2] * 10) + (selectedShotArray[3] * 10) +
-    //             (selectedShotArray[4] * 10) + (selectedShotArray[5] * 10) + (selectedShotArray[6] * 10) + (selectedShotArray[7] * 10) +
-    //             (selectedShotArray[8] * 10) + (selectedShotArray[9] * 10) + (selectedShotArray[10] * 10) +
-    //             (selectedShotArray[11] * 6) + (selectedShotArray[12] * 6) + (selectedShotArray[13] * 6) +
-    //             (selectedShotArray[14] * 6) + (selectedShotArray[15] * 6) + (selectedShotArray[16] * 6) +
-    //             (selectedShotArray[17] * 6) + (selectedShotArray[18] * 6) + (selectedShotArray[19] * 6) + (selectedShotArray[20] * 6)
-    //         ) /
-    //         (10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 6 + 6 + 6 + 6 + 6 + 6 + 6 + 6 + 6 + 6)
-    //     );
-    // }
 
     return (
         <Tab.Navigator
@@ -784,6 +748,8 @@ function HomeTabs() {
                         sixtyWedge25={sixtyWedge25}
                         // calculateAverage={calculateAverage}
                         // weightedAverage={weightedAverage}
+                        // Club Averages
+                        driver100Average={driver100Average}
                         {...props}
                     />
                 )}
@@ -801,6 +767,8 @@ function HomeTabs() {
                         setSelectedValue={setSelectedValue}
                         selectedPower={selectedPower}
                         setSelectedPower={setSelectedPower}
+                        selectedLabel={selectedLabel}
+                        setSelectedLabel={setSelectedLabel}
                         // driver100={driver100}
                         // driver80={driver80}
                         // threeWood100={threeWood100}

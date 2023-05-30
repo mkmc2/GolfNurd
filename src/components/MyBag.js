@@ -7,6 +7,8 @@ import {
     Text,
     StatusBar,
     TouchableOpacity,
+    Span,
+    ScrollView,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Feather } from '@expo/vector-icons';
@@ -19,7 +21,11 @@ import DriverRowComponent from './clubDataComponents/DriverRowComponent';
 import { twoHybrid75 } from '../data/shotData/MyShots';
 
 
-const MyBagScreen = ({ navigation, driver100, driver75, threeWood100, threeWood75, fiveWood100, fiveWood75, sevenWood100, sevenWood75,
+const MyBagScreen = ({ navigation,
+    // Calculations
+    shotWeightedAverage,
+    // Woods
+    driver100, driver75, threeWood100, threeWood75, fiveWood100, fiveWood75, sevenWood100, sevenWood75,
     twoHybrid100, twoHybrid75, threeHybrid100, threeHybrid75, fourHybrid100, fourHybrid75,
     fiveHybrid100, fiveHybrid75, sixHybrid100, sixHybrid75, sevenHybrid100, sevenHybrid75,
     // Irons
@@ -39,7 +45,10 @@ const MyBagScreen = ({ navigation, driver100, driver75, threeWood100, threeWood7
     fifty4Wedge100, fifty4Wedge75, fifty4Wedge50, fifty4Wedge25,
     fifty6Wedge100, fifty6Wedge75, fifty6Wedge50, fifty6Wedge25,
     fifty8Wedge100, fifty8Wedge75, fifty8Wedge50, fifty8Wedge25,
-    sixtyWedge100, sixtyWedge75, sixtyWedge50, sixtyWedge25
+    sixtyWedge100, sixtyWedge75, sixtyWedge50, sixtyWedge25,
+    // Club Averages
+    driver100Average,
+
 }) => {
 
     const selectedShotArray = driver100;
@@ -69,9 +78,13 @@ const MyBagScreen = ({ navigation, driver100, driver75, threeWood100, threeWood7
 
         shotFunction100 = () => {
             // Woods
-            if (item.value === 'driver' && driver100.length > 0) {
-                const shotAverage100 = driver100[0]
-                return shotAverage100
+            if (item.value === 'driver' && driver100.length > 5) {
+                // const shotAverage100 = driver100[0]
+                // const shotAverage100 = ((driver100[0] + driver100[1] + driver100[2]) / 3)
+                // const shotAverage100 = Math.ceil(driver100Average);
+                // const shotAverage100 = Math.round(driver100Average);
+                // return shotAverage100
+                return shotWeightedAverage(driver100);
             }
             else if (item.value === '3wood' && threeWood100.length > 0) {
                 const shotAverage100 = threeWood100[0]
@@ -178,14 +191,15 @@ const MyBagScreen = ({ navigation, driver100, driver75, threeWood100, threeWood7
             }
             // null
             else {
-                return 'null'
+                return <Text style={[mainStyles.mdText, { fontWeight: 400, fontSize: 11, }]}>not enough data</Text>
             }
         }
         shotFunction75 = () => {
             // Driver
-            if (item.value === 'driver' && driver75.length > 0) {
-                const shotAverage75 = driver75[0]
-                return shotAverage75
+            if (item.value === 'driver' && driver75.length > 5) {
+                // const shotAverage75 = driver75[0]
+                // return shotAverage75
+                return shotWeightedAverage(driver75);
             }
             else if (item.value === '3wood' && threeWood75.length > 0) {
                 const shotAverage75 = threeWood75[0]
@@ -292,7 +306,7 @@ const MyBagScreen = ({ navigation, driver100, driver75, threeWood100, threeWood7
             }
             // Else
             else {
-                return 'null'
+                return <Text style={[mainStyles.mdText, { fontWeight: 400, fontSize: 11, }]}>not enough data</Text>
             }
         }
         shotFunction50 = () => {
@@ -364,7 +378,7 @@ const MyBagScreen = ({ navigation, driver100, driver75, threeWood100, threeWood7
             }
             // Else
             else {
-                return 'null'
+                return <Text style={[mainStyles.mdText, { fontWeight: 400, fontSize: 11, }]}>not enough data</Text>
             }
         }
 
@@ -404,7 +418,7 @@ const MyBagScreen = ({ navigation, driver100, driver75, threeWood100, threeWood7
             }
             // Else
             else {
-                return 'null'
+                return <Text style={[mainStyles.mdText, { fontWeight: 400, fontSize: 11, }]}>not enough data</Text>
             }
         }
         const average100 = shotFunction100();
@@ -416,25 +430,25 @@ const MyBagScreen = ({ navigation, driver100, driver75, threeWood100, threeWood7
         const fullShotLabelFunction = () => {
             if (item.clubType === 'wood') {
                 // const fullShot = "100%"
-                const fullShot = "Full"
+                const fullShot = "Full Swing"
                 return fullShot
             } else if (item.clubType === "hybrid") {
-                const fullShot = "Full"
+                const fullShot = "Full Swing"
                 // const fullShot = "Full Shot"
                 return fullShot
             } else if (item.clubType === "iron" || item.clubType === "wedge") {
-                const fullShot = "Full"
+                const fullShot = "Full Swing"
                 // const fullShot = "Full Shot"
                 return fullShot
             }
             else {
-                return "Full"
+                return "Full Shot"
             }
         }
         // 3/4 Swing
         const seventyFiveShotLabelFunction = () => {
             if (item.value === 'driver') {
-                const fullShot = "Fwy Finder"
+                const fullShot = "Fairway Finder"
                 return fullShot
             }
             else if (item.clubType === 'wood') {
@@ -442,11 +456,15 @@ const MyBagScreen = ({ navigation, driver100, driver75, threeWood100, threeWood7
                 return fullShot
             }
             else if (item.clubType === "hybrid") {
-                const fullShot = "3/4"
+                const fullShot = "Easy Swing"
                 return fullShot
             }
             else if (item.clubType === "iron") {
-                const fullShot = "3/4"
+                const fullShot = "3/4 Swing"
+                return fullShot
+            }
+            else if (item.clubType === "wedge") {
+                const fullShot = "3/4 Swing"
                 return fullShot
             }
             else {
@@ -455,28 +473,25 @@ const MyBagScreen = ({ navigation, driver100, driver75, threeWood100, threeWood7
         }
         // 1/2 Swing
         const fiftyShotLabelFunction = () => {
-            if (item.clubType === 'iron' || item.clubType === "wedge") {
-                const fullShot = "1/2"
+            if (item.clubType === 'iron') {
+                const fullShot = "Punch Shot"
                 return fullShot
-            } else {
-                return "1/2"
+            }
+            else if (item.clubType === 'wedge') {
+                const fullShot = "Half Swing"
+                return fullShot
+            }
+            else {
+                return "Half Swing"
             }
         }
         // 1/4 Swing
         const twentyFiveShotLabelFunction = () => {
-            if (item.clubType === 'iron') {
-                const fullShot = "Half Swing"
-                return fullShot
-            }
-            else if (item.clubType === 'wood') {
-                const fullShot = "Easy Swing"
-                return fullShot
-            }
-            else if (item.clubType === "hybrid") {
-                const fullShot = "Easy Swing"
+            if (item.clubType === 'wedge') {
+                const fullShot = "Quarter Swing"
                 return fullShot
             } else {
-                return "1/4"
+                return "1/4 Swing"
             }
         }
         const fullShotLabel = fullShotLabelFunction();
@@ -493,139 +508,99 @@ const MyBagScreen = ({ navigation, driver100, driver75, threeWood100, threeWood7
                 }
                 }
                 >
-                    <View style={[mainStyles.listRow, {}]}>
-                        <View style={[mainStyles.row, { flex: 1, alignItems: 'stretch', }]}>
-                            <View style={{ flex: 1, justifyContent: 'center', }}>
-                                {/* Club Row */}
-                                <View style={{}}>
-                                    <Text style={[mainStyles.header2, { color: "blue" }]} key={item.id}>{item.club}</Text>
-                                </View>
+                    <View style={[mainStyles.listRow, { padding: 0 }]}>
+                        <View style={{ flex: 1, justifyContent: 'center', paddingVertical: 5, backgroundColor: "#d6d6d6", borderTopRightRadius: 10, borderTopLeftRadius: 10, }}>
+                            <View style={{ padding: 10 }}>
+                                <Text style={[mainStyles.header1, { color: "blue" }]} key={item.id}>{item.club}</Text>
                             </View>
-                            <View style={{ flex: 4, flexDirection: 'row', justifyContent: 'space-around', }}>
+                        </View>
+                        <View style={{ flex: 1, alignItems: 'stretch', backgroundColor: '#eee', borderRadius: 10, padding: 10, }}>
+                            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 5, paddingTop: 5, }}>
+                                <Text style={[mainStyles.mdText, { color: '#4d4d4d', }]}>Shot Type</Text>
+                                <Text style={[mainStyles.mdText, { color: '#4d4d4d', paddingHorizontal: 5, }]}>Distance</Text>
+                            </View>
+                            <View style={{ flex: 1, justifyContent: 'flex-start', paddingHorizontal: 5, paddingBottom: 10, }}>
                                 {/* 100% yardage */}
-                                <View style={{ alignItems: "center", }}>
-                                    <View style={[mainStyles.pillBackground100, {}]}>
-                                        {/* Swing Percent */}
-                                        <Text style={[mainStyles.mdText, { paddingVertical: 2, paddingHorizontal: 10, fontWeight: 800, color: 'white', }]}>{fullShotLabel}</Text>
+                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', borderBottomWidth: .75, borderBottomColor: "gray", }}>
+                                    <View style={{ flex: 3, paddingBottom: 3, }}>
+                                        <Text style={[mainStyles.header3, { paddingVertical: 2, fontWeight: 800, }]}>{fullShotLabel}</Text>
+                                        {/* <Text style={[mainStyles.mdText, { paddingVertical: 2, paddingHorizontal: 10, fontWeight: 800, color: 'white', }]}>{fullShotLabel}</Text> */}
                                     </View>
-                                    <View style={{ flexDirection: 'row', paddingTop: 5, }}>
-                                        <View style={{ alignItems: "center", paddingHorizontal: 4, }}>
-                                            <Text style={mainStyles.smallText}>yards</Text>
-                                            {/* Shot distance */}
-                                            <Text style={mainStyles.header2}>{average100}</Text>
-                                            {/* <Text style={mainStyles.header2}>{item.power}</Text> */}
+                                    <View style={{ flex: 3, alignItems: 'flex-end', paddingBottom: 5, }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'flex-end', padding: 5, borderRadius: 5, paddingHorizontal: 10, }}>
+                                            <Text style={[mainStyles.header1, { color: '#4d4d4d' }]}>{average100}</Text>
+                                            {/* <Text style={[mainStyles.header4, { color: '#4d4d4d', paddingLeft: 3, }]}>yds</Text> */}
                                         </View>
-                                        {/* Shot standard deviation */}
-                                        {/* <View style={{ alignItems: "center", paddingHorizontal: 4, borderLeftWidth: 1, borderLeftColor: "#707070" }}>
-                                            <Text style={mainStyles.smallText}>+/-</Text>
-                                            <Text style={mainStyles.header2}>{driver100Deviation}</Text>
-                                        </View> */}
                                     </View>
                                 </View>
-                                {/* 75% yardage */}
-                                <View style={{ alignItems: "center", paddingHorizontal: 10, }}>
-                                    <View style={[mainStyles.pillBackground75, {}]}>
-                                        {/* Swing Percent */}
-                                        <Text style={[mainStyles.mdText, { paddingVertical: 2, paddingHorizontal: 10, fontWeight: 800, color: 'white', }]}>{seventyFiveShotLabel}</Text>
+                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', borderBottomWidth: .75, borderBottomColor: "gray", }}>
+                                    <View style={{ flex: 3, paddingBottom: 3, }}>
+                                        <Text style={[mainStyles.header3, { paddingVertical: 2, fontWeight: 800, }]}>{seventyFiveShotLabel}</Text>
+                                        {/* <Text style={[mainStyles.mdText, { paddingVertical: 2, paddingHorizontal: 10, fontWeight: 800, color: 'white', }]}>{fullShotLabel}</Text> */}
                                     </View>
-                                    <View style={{ flexDirection: 'row', paddingTop: 5, }}>
-                                        <View style={{ alignItems: "center", paddingHorizontal: 4, }}>
-                                            <Text style={mainStyles.smallText}>yards</Text>
-                                            {/* Shot distance */}
-                                            <Text style={mainStyles.header2}>{average75}</Text>
-                                            {/* <Text style={mainStyles.header2}>{item.power}</Text> */}
+                                    <View style={{ flex: 3, alignItems: 'flex-end', paddingBottom: 5, }}>
+                                        <View style={{ alignItems: 'center', padding: 5, borderRadius: 5, paddingHorizontal: 10, }}>
+                                            <Text style={[mainStyles.header1, { color: '#4d4d4d' }]}>{average75}</Text>
                                         </View>
-                                        {/* Shot standard deviation */}
-                                        {/* <View style={{ alignItems: "center", paddingHorizontal: 4, borderLeftWidth: 1, borderLeftColor: "#707070" }}>
-                                            <Text style={mainStyles.smallText}>+/-</Text>
-                                            <Text style={mainStyles.header2}>{driver100Deviation}</Text>
-                                        </View> */}
                                     </View>
                                 </View>
                             </View>
                         </View>
                     </View>
                 </TouchableOpacity>
-                // <DriverRowComponent
-                //     distance100="TBD"
-                //     distance75="333"
-                //     title100="100%"
-                //     title75="75%"
-                //     itemClub={item.club}
-                //     itemId={item.id}
-                // />
             );
         } else if ((item.clubType === 'iron')) {
             return (
-                // <Text key={item.id}>{item.club}</Text>
-                <TouchableOpacity onPress={() => console.log(`Pressed ${item.club} & ${item.value}`)}>
-                    <View style={[mainStyles.listRow, {}]}>
-                        <View style={[mainStyles.row, { flex: 1, alignItems: 'stretch', }]}>
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                                {/* Club Row */}
-                                <View style={{}}>
-                                    <Text style={[mainStyles.header2, { color: "blue" }]} key={item.id}>{item.club}</Text>
-                                </View>
+                <TouchableOpacity onPress={() => {
+                    console.log(`Pressed ${item.club} & ${item.value}`)
+                }
+                }
+                >
+                    <View style={[mainStyles.listRow, { padding: 0 }]}>
+                        <View style={{ flex: 1, justifyContent: 'center', paddingVertical: 5, backgroundColor: "#d6d6d6", borderTopRightRadius: 10, borderTopLeftRadius: 10, }}>
+                            <View style={{ padding: 10 }}>
+                                <Text style={[mainStyles.header1, { color: "blue" }]} key={item.id}>{item.club}</Text>
                             </View>
-                            <View style={{ flex: 4, flexDirection: 'row', justifyContent: 'space-around', }}>
+                        </View>
+                        <View style={{ flex: 1, alignItems: 'stretch', backgroundColor: '#eee', borderRadius: 10, padding: 10, }}>
+                            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 5, paddingTop: 5, }}>
+                                <Text style={[mainStyles.mdText, { color: '#4d4d4d', }]}>Shot Type</Text>
+                                <Text style={[mainStyles.mdText, { color: '#4d4d4d', paddingHorizontal: 5, }]}>Distance</Text>
+                            </View>
+                            <View style={{ flex: 1, justifyContent: 'flex-start', paddingHorizontal: 5, paddingBottom: 10, }}>
                                 {/* 100% yardage */}
-                                <View style={{ alignItems: "center", paddingHorizontal: 10, }}>
-                                    <View style={[mainStyles.pillBackground100, {}]}>
-                                        {/* Swing Percent */}
-                                        <Text style={[mainStyles.mdText, { paddingVertical: 2, paddingHorizontal: 10, fontWeight: 800, color: 'white', }]}>{fullShotLabel}</Text>
+                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', borderBottomWidth: .75, borderBottomColor: "gray", }}>
+                                    <View style={{ flex: 3, paddingBottom: 3, }}>
+                                        <Text style={[mainStyles.header3, { paddingVertical: 2, fontWeight: 800, }]}>{fullShotLabel}</Text>
+                                        {/* <Text style={[mainStyles.mdText, { paddingVertical: 2, paddingHorizontal: 10, fontWeight: 800, color: 'white', }]}>{fullShotLabel}</Text> */}
                                     </View>
-                                    <View style={{ flexDirection: 'row', paddingTop: 5, }}>
-                                        <View style={{ alignItems: "center", paddingHorizontal: 4, }}>
-                                            <Text style={mainStyles.smallText}>yards</Text>
-                                            {/* Shot distance */}
-                                            <Text style={mainStyles.header2}>{average100}</Text>
-                                            {/* <Text style={mainStyles.header2}>{item.power}</Text> */}
+                                    <View style={{ flex: 3, alignItems: 'flex-end', paddingBottom: 5, }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'flex-end', padding: 5, borderRadius: 5, paddingHorizontal: 10, }}>
+                                            <Text style={[mainStyles.header1, { color: '#4d4d4d' }]}>{average100}</Text>
+                                            {/* <Text style={[mainStyles.header4, { color: '#4d4d4d', paddingLeft: 3, }]}>yds</Text> */}
                                         </View>
-                                        {/* Shot standard deviation */}
-                                        {/* <View style={{ alignItems: "center", paddingHorizontal: 4, borderLeftWidth: 1, borderLeftColor: "#707070" }}>
-                                                        <Text style={mainStyles.smallText}>+/-</Text>
-                                                        <Text style={mainStyles.header2}>{driver100Deviation}</Text>
-                                                    </View> */}
                                     </View>
                                 </View>
-                                {/* 75% yardage */}
-                                <View style={{ alignItems: "center", paddingHorizontal: 10, }}>
-                                    <View style={[mainStyles.pillBackground75, {}]}>
-                                        {/* Swing Percent */}
-                                        <Text style={[mainStyles.mdText, { paddingVertical: 2, paddingHorizontal: 10, fontWeight: 800, color: 'white', }]}>{seventyFiveShotLabel}</Text>
+                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', borderBottomWidth: .75, borderBottomColor: "gray", }}>
+                                    <View style={{ flex: 3, paddingBottom: 3, }}>
+                                        <Text style={[mainStyles.header3, { paddingVertical: 2, fontWeight: 800, }]}>{seventyFiveShotLabel}</Text>
+                                        {/* <Text style={[mainStyles.mdText, { paddingVertical: 2, paddingHorizontal: 10, fontWeight: 800, color: 'white', }]}>{fullShotLabel}</Text> */}
                                     </View>
-                                    <View style={{ flexDirection: 'row', paddingTop: 5, }}>
-                                        <View style={{ alignItems: "center", paddingHorizontal: 4, }}>
-                                            <Text style={mainStyles.smallText}>yards</Text>
-                                            {/* Shot distance */}
-                                            <Text style={mainStyles.header2}>{average75}</Text>
-                                            {/* <Text style={mainStyles.header2}>{item.power}</Text> */}
+                                    <View style={{ flex: 3, alignItems: 'flex-end', paddingBottom: 5, }}>
+                                        <View style={{ alignItems: 'center', padding: 5, borderRadius: 5, paddingHorizontal: 10, }}>
+                                            <Text style={[mainStyles.header1, { color: '#4d4d4d' }]}>{average75}</Text>
                                         </View>
-                                        {/* Shot standard deviation */}
-                                        {/* <View style={{ alignItems: "center", paddingHorizontal: 4, borderLeftWidth: 1, borderLeftColor: "#707070" }}>
-                                                        <Text style={mainStyles.smallText}>+/-</Text>
-                                                        <Text style={mainStyles.header2}>{driver100Deviation}</Text>
-                                                    </View> */}
                                     </View>
                                 </View>
-                                {/* 50% yardage */}
-                                <View style={{ alignItems: "center", paddingHorizontal: 10, }}>
-                                    <View style={[mainStyles.pillBackground50, {}]}>
-                                        {/* Swing Percent */}
-                                        <Text style={[mainStyles.mdText, { paddingVertical: 2, paddingHorizontal: 10, fontWeight: 800, color: 'white', }]}>{fiftyShotLabel}</Text>
+                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', borderBottomWidth: .75, borderBottomColor: "gray", }}>
+                                    <View style={{ flex: 3, paddingBottom: 3, }}>
+                                        <Text style={[mainStyles.header3, { paddingVertical: 2, fontWeight: 800, }]}>{fiftyShotLabel}</Text>
+                                        {/* <Text style={[mainStyles.mdText, { paddingVertical: 2, paddingHorizontal: 10, fontWeight: 800, color: 'white', }]}>{fullShotLabel}</Text> */}
                                     </View>
-                                    <View style={{ flexDirection: 'row', paddingTop: 5, }}>
-                                        <View style={{ alignItems: "center", paddingHorizontal: 4, }}>
-                                            <Text style={mainStyles.smallText}>yards</Text>
-                                            {/* Shot distance */}
-                                            <Text style={mainStyles.header2}>{average50}</Text>
-                                            {/* <Text style={mainStyles.header2}>{item.power}</Text> */}
+                                    <View style={{ flex: 3, alignItems: 'flex-end', paddingBottom: 5, }}>
+                                        <View style={{ alignItems: 'center', padding: 5, borderRadius: 5, paddingHorizontal: 10, }}>
+                                            <Text style={[mainStyles.header1, { color: '#4d4d4d' }]}>{average50}</Text>
                                         </View>
-                                        {/* Shot standard deviation */}
-                                        {/* <View style={{ alignItems: "center", paddingHorizontal: 4, borderLeftWidth: 1, borderLeftColor: "#707070" }}>
-                                                        <Text style={mainStyles.smallText}>+/-</Text>
-                                                        <Text style={mainStyles.header2}>{driver100Deviation}</Text>
-                                                    </View> */}
                                     </View>
                                 </View>
                             </View>
@@ -635,100 +610,74 @@ const MyBagScreen = ({ navigation, driver100, driver75, threeWood100, threeWood7
             )
         } else if ((item.clubType === 'wedge')) {
             return (                // <Text key={item.id}>{item.club}</Text>
-                <TouchableOpacity onPress={() => console.log(`Pressed ${item.club} & ${item.value}`)}>
-                    <View style={[mainStyles.listRow, {}]}>
-                        <View style={[mainStyles.row, { flex: 1, alignItems: 'stretch', }]}>
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                                {/* Club Row */}
-                                <View style={{}}>
-                                    <Text style={[mainStyles.header2, { color: "blue" }]} key={item.id}>{item.club}</Text>
-                                </View>
+                <TouchableOpacity onPress={() => {
+                    console.log(`Pressed ${item.club} & ${item.value}`)
+                }
+                }
+                >
+                    <View style={[mainStyles.listRow, { padding: 0 }]}>
+                        <View style={{ flex: 1, justifyContent: 'center', paddingVertical: 5, backgroundColor: "#d6d6d6", borderTopRightRadius: 10, borderTopLeftRadius: 10, }}>
+                            <View style={{ padding: 10 }}>
+                                <Text style={[mainStyles.header1, { color: "blue" }]} key={item.id}>{item.club}</Text>
                             </View>
-                            <View style={{ flex: 4, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10, }}>
+                        </View>
+                        <View style={{ flex: 1, alignItems: 'stretch', backgroundColor: '#eee', borderRadius: 10, padding: 10, }}>
+                            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 5, paddingTop: 5, }}>
+                                <Text style={[mainStyles.mdText, { color: '#4d4d4d', }]}>Shot Type</Text>
+                                <Text style={[mainStyles.mdText, { color: '#4d4d4d', paddingHorizontal: 5, }]}>Distance</Text>
+                            </View>
+                            <View style={{ flex: 1, justifyContent: 'flex-start', paddingHorizontal: 5, paddingBottom: 10, }}>
                                 {/* 100% yardage */}
-                                <View style={{ alignItems: "center", }}>
-                                    <View style={[mainStyles.pillBackground100, {}]}>
-                                        {/* Swing Percent */}
-                                        <Text style={[mainStyles.mdText, { paddingVertical: 2, paddingHorizontal: 10, fontWeight: 800, color: 'white', }]}>{fullShotLabel}</Text>
+                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', borderBottomWidth: .75, borderBottomColor: "gray", }}>
+                                    <View style={{ flex: 3, paddingBottom: 3, }}>
+                                        <Text style={[mainStyles.header3, { paddingVertical: 2, fontWeight: 800, }]}>{fullShotLabel}</Text>
+                                        {/* <Text style={[mainStyles.mdText, { paddingVertical: 2, paddingHorizontal: 10, fontWeight: 800, color: 'white', }]}>{fullShotLabel}</Text> */}
                                     </View>
-                                    <View style={{ flexDirection: 'row', paddingTop: 5, }}>
-                                        <View style={{ alignItems: "center", paddingHorizontal: 4, }}>
-                                            <Text style={mainStyles.smallText}>yards</Text>
-                                            {/* Shot distance */}
-                                            <Text style={mainStyles.header2}>{average100}</Text>
-                                            {/* <Text style={mainStyles.header2}>{item.power}</Text> */}
+                                    <View style={{ flex: 3, alignItems: 'flex-end', paddingBottom: 5, }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'flex-end', padding: 5, borderRadius: 5, paddingHorizontal: 10, }}>
+                                            <Text style={[mainStyles.header1, { color: '#4d4d4d' }]}>{average100}</Text>
+                                            {/* <Text style={[mainStyles.header4, { color: '#4d4d4d', paddingLeft: 3, }]}>yds</Text> */}
                                         </View>
-                                        {/* Shot standard deviation */}
-                                        {/* <View style={{ alignItems: "center", paddingHorizontal: 4, borderLeftWidth: 1, borderLeftColor: "#707070" }}>
-                                        <Text style={mainStyles.smallText}>+/-</Text>
-                                        <Text style={mainStyles.header2}>{driver100Deviation}</Text>
-                                    </View> */}
                                     </View>
                                 </View>
-                                {/* 75% yardage */}
-                                <View style={{ alignItems: "center", }}>
-                                    <View style={[mainStyles.pillBackground75, {}]}>
-                                        {/* Swing Percent */}
-                                        <Text style={[mainStyles.mdText, { paddingVertical: 2, paddingHorizontal: 10, fontWeight: 800, color: 'white', }]}>{seventyFiveShotLabel}</Text>
+                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', borderBottomWidth: .75, borderBottomColor: "gray", }}>
+                                    <View style={{ flex: 3, paddingBottom: 3, }}>
+                                        <Text style={[mainStyles.header3, { paddingVertical: 2, fontWeight: 800, }]}>{seventyFiveShotLabel}</Text>
+                                        {/* <Text style={[mainStyles.mdText, { paddingVertical: 2, paddingHorizontal: 10, fontWeight: 800, color: 'white', }]}>{fullShotLabel}</Text> */}
                                     </View>
-                                    <View style={{ flexDirection: 'row', paddingTop: 5, }}>
-                                        <View style={{ alignItems: "center", paddingHorizontal: 4, }}>
-                                            <Text style={mainStyles.smallText}>yards</Text>
-                                            {/* Shot distance */}
-                                            <Text style={mainStyles.header2}>{average75}</Text>
-                                            {/* <Text style={mainStyles.header2}>{item.power}</Text> */}
+                                    <View style={{ flex: 3, alignItems: 'flex-end', paddingBottom: 5, }}>
+                                        <View style={{ alignItems: 'center', padding: 5, borderRadius: 5, paddingHorizontal: 10, }}>
+                                            <Text style={[mainStyles.header1, { color: '#4d4d4d' }]}>{average75}</Text>
                                         </View>
-                                        {/* Shot standard deviation */}
-                                        {/* <View style={{ alignItems: "center", paddingHorizontal: 4, borderLeftWidth: 1, borderLeftColor: "#707070" }}>
-                                        <Text style={mainStyles.smallText}>+/-</Text>
-                                        <Text style={mainStyles.header2}>{driver100Deviation}</Text>
-                                    </View> */}
                                     </View>
                                 </View>
-                                {/* 50% yardage */}
-                                <View style={{ alignItems: "center", }}>
-                                    <View style={[mainStyles.pillBackground50, {}]}>
-                                        {/* Swing Percent */}
-                                        <Text style={[mainStyles.mdText, { paddingVertical: 2, paddingHorizontal: 10, fontWeight: 800, color: 'white', }]}>{fiftyShotLabel}</Text>
+                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', borderBottomWidth: .75, borderBottomColor: "gray", }}>
+                                    <View style={{ flex: 3, paddingBottom: 3, }}>
+                                        <Text style={[mainStyles.header3, { paddingVertical: 2, fontWeight: 800, }]}>{fiftyShotLabel}</Text>
+                                        {/* <Text style={[mainStyles.mdText, { paddingVertical: 2, paddingHorizontal: 10, fontWeight: 800, color: 'white', }]}>{fullShotLabel}</Text> */}
                                     </View>
-                                    <View style={{ flexDirection: 'row', paddingTop: 5, }}>
-                                        <View style={{ alignItems: "center", paddingHorizontal: 4, }}>
-                                            <Text style={mainStyles.smallText}>yards</Text>
-                                            {/* Shot distance */}
-                                            <Text style={mainStyles.header2}>{average50}</Text>
-                                            {/* <Text style={mainStyles.header2}>{item.power}</Text> */}
+                                    <View style={{ flex: 3, alignItems: 'flex-end', paddingBottom: 5, }}>
+                                        <View style={{ alignItems: 'center', padding: 5, borderRadius: 5, paddingHorizontal: 10, }}>
+                                            <Text style={[mainStyles.header1, { color: '#4d4d4d' }]}>{average50}</Text>
                                         </View>
-                                        {/* Shot standard deviation */}
-                                        {/* <View style={{ alignItems: "center", paddingHorizontal: 4, borderLeftWidth: 1, borderLeftColor: "#707070" }}>
-                                        <Text style={mainStyles.smallText}>+/-</Text>
-                                        <Text style={mainStyles.header2}>{driver100Deviation}</Text>
-                                    </View> */}
                                     </View>
                                 </View>
-                                {/* 25% yardage */}
-                                <View style={{ alignItems: "center", }}>
-                                    <View style={[mainStyles.pillBackground25, {}]}>
-                                        {/* Swing Percent */}
-                                        <Text style={[mainStyles.mdText, { paddingVertical: 2, paddingHorizontal: 10, fontWeight: 800, color: 'white', }]}>{twentyFiveShotLabel}</Text>
+                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', borderBottomWidth: .75, borderBottomColor: "gray", }}>
+                                    <View style={{ flex: 3, paddingBottom: 3, }}>
+                                        <Text style={[mainStyles.header3, { paddingVertical: 2, fontWeight: 800, }]}>{twentyFiveShotLabel}</Text>
+                                        {/* <Text style={[mainStyles.mdText, { paddingVertical: 2, paddingHorizontal: 10, fontWeight: 800, color: 'white', }]}>{fullShotLabel}</Text> */}
                                     </View>
-                                    <View style={{ flexDirection: 'row', paddingTop: 5, }}>
-                                        <View style={{ alignItems: "center", paddingHorizontal: 4, }}>
-                                            <Text style={mainStyles.smallText}>yards</Text>
-                                            {/* Shot distance */}
-                                            <Text style={mainStyles.header2}>{average25}</Text>
-                                            {/* <Text style={mainStyles.header2}>{item.power}</Text> */}
+                                    <View style={{ flex: 3, alignItems: 'flex-end', paddingBottom: 5, }}>
+                                        <View style={{ alignItems: 'center', padding: 5, borderRadius: 5, paddingHorizontal: 10, }}>
+                                            <Text style={[mainStyles.header1, { color: '#4d4d4d' }]}>{average25}</Text>
                                         </View>
-                                        {/* Shot standard deviation */}
-                                        {/* <View style={{ alignItems: "center", paddingHorizontal: 4, borderLeftWidth: 1, borderLeftColor: "#707070" }}>
-                                        <Text style={mainStyles.smallText}>+/-</Text>
-                                        <Text style={mainStyles.header2}>{driver100Deviation}</Text>
-                                    </View> */}
                                     </View>
                                 </View>
                             </View>
                         </View>
                     </View>
-                </TouchableOpacity>);
+                </TouchableOpacity>
+            );
         } else {
             return null
         }
@@ -739,7 +688,7 @@ const MyBagScreen = ({ navigation, driver100, driver75, threeWood100, threeWood7
         <SafeAreaView style={mainStyles.container}>
             <View style={[mainStyles.screenContainer, { paddingBottom: 110, }]}>
                 <Text style={[mainStyles.header1, { alignSelf: "center", paddingBottom: 30, fontSize: 30, }]}>My Bag</Text>
-                <View style={{ paddingBottom: 20, flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end" }}>
+                <View style={{ paddingBottom: 20, flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end", }}>
                     <Text style={mainStyles.header1}>Clubs in my bag:</Text>
                     <TouchableOpacity
                         // onPress={() => console.log("Edit bag button pressed")}
@@ -750,25 +699,11 @@ const MyBagScreen = ({ navigation, driver100, driver75, threeWood100, threeWood7
                         <Feather name="edit" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
-                {/* <FlatList
-                    data={clubsInMyBag}
-                    renderItem={renderClubItem}
-                    keyExtractor={(item) => item.id.toString()}
-                /> */}
-                {/* <FlatList
-                    data={clubsInMyBag2}
-                    renderItem={renderClubItem}
-                    keyExtractor={(item) => {
-                        if (item.status === 'active') {
-                            return item.id.toString();
-                        }
-                        return '';
-                    }}
-                /> */}
                 <FlatList
                     data={clubsInMyBag2.filter((item) => item.status === 'active')}
                     renderItem={renderClubItem}
                     keyExtractor={(item) => item.id.toString()}
+                    style={{}}
                 />
             </View>
         </SafeAreaView>
