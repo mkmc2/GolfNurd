@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Feather } from '@expo/vector-icons';
+// import { ButtonGroup, } from '@ui-kitten/components';
 //Styles
 import mainStyles from '../styles/mainStyles';
 
@@ -23,7 +24,7 @@ import { twoHybrid75 } from '../data/shotData/MyShots';
 
 const MyBagScreen = ({ navigation,
     // Calculations
-    shotWeightedAverage,
+    shotWeightedAverage, shotWeightedAverage1, shotWeightedAverage2,
     // Woods
     driver100, driver75, threeWood100, threeWood75, fiveWood100, fiveWood75, sevenWood100, sevenWood75,
     twoHybrid100, twoHybrid75, threeHybrid100, threeHybrid75, fourHybrid100, fourHybrid75,
@@ -50,31 +51,21 @@ const MyBagScreen = ({ navigation,
     driver100Average,
 
 }) => {
-
-    const selectedShotArray = driver100;
-    // const average = calculateAverage(driver100);
-
-    const calculateAverage = () => {
-        // const selectedShotArray = driver100;
-        const sum = selectedShotArray.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-        const average = sum / selectedShotArray.length;
-        return average;
-    };
-    function weightedAverage() {
-        return (
-            ((selectedShotArray[0] * 10) + (selectedShotArray[1] * 10) + (selectedShotArray[2] * 10) + (selectedShotArray[3] * 10) +
-                (selectedShotArray[4] * 10) + (selectedShotArray[5] * 10) + (selectedShotArray[6] * 10) + (selectedShotArray[7] * 10) +
-                (selectedShotArray[8] * 10) + (selectedShotArray[9] * 10) + (selectedShotArray[10] * 10) +
-                (selectedShotArray[11] * 6) + (selectedShotArray[12] * 6) + (selectedShotArray[13] * 6) +
-                (selectedShotArray[14] * 6) + (selectedShotArray[15] * 6) + (selectedShotArray[16] * 6) +
-                (selectedShotArray[17] * 6) + (selectedShotArray[18] * 6) + (selectedShotArray[19] * 6) + (selectedShotArray[20] * 6)
-            ) /
-            (10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 6 + 6 + 6 + 6 + 6 + 6 + 6 + 6 + 6 + 6)
-        );
+    // Button Group
+    // const [text, setText] = useState('Press any button');
+    // Open Expanded View
+    const [openExpandedView, setOpenExpandedView] = useState(false);
+    const closeExpandedShotView = () => {
+        return setOpenExpandedView(false);
     }
+    const openExpandedShotView = () => {
+        return setOpenExpandedView(!openExpandedView)
+    }
+    // const selectedShotArray = driver100;
 
-
+    const minNumOfShots = 5
     const renderClubItem = ({ item, distance100, distance75, title100, title75, itemClub, itemId }) => {
+
 
         shotFunction100 = () => {
             // Woods
@@ -84,110 +75,92 @@ const MyBagScreen = ({ navigation,
                 // const shotAverage100 = Math.ceil(driver100Average);
                 // const shotAverage100 = Math.round(driver100Average);
                 // return shotAverage100
-                return shotWeightedAverage(driver100);
+                // return shotWeightedAverage(driver100);
+                if (driver100.length > 5 && driver100.length < 10) {
+                    return shotWeightedAverage(driver100);
+                } else if (driver100.length > 10 && driver100.length < 20) {
+                    return shotWeightedAverage1(driver100);
+                } else {
+                    return shotWeightedAverage2(driver100);
+                }
             }
-            else if (item.value === '3wood' && threeWood100.length > 0) {
-                const shotAverage100 = threeWood100[0]
-                return shotAverage100
+            else if (item.value === '3wood' && threeWood100.length > minNumOfShots) {
+                return shotWeightedAverage(threeWood100);
             }
-            else if (item.value === '5wood' && fiveWood100.length > 0) {
-                const shotAverage100 = fiveWood100[0]
-                return shotAverage100
+            else if (item.value === '5wood' && fiveWood100.length > minNumOfShots) {
+                return shotWeightedAverage(fiveWood100);
             }
-            else if (item.value === '7wood' && sevenWood100.length > 0) {
-                const shotAverage100 = sevenWood100[0]
-                return shotAverage100
+            else if (item.value === '7wood' && sevenWood100.length > minNumOfShots) {
+                return shotWeightedAverage(sevenWood100);
             }
             // Hybrids
-            else if (item.value === '2hybrid' && twoHybrid100.length > 0) {
-                const shotAverage100 = twoHybrid100[0]
-                return shotAverage100
+            else if (item.value === '2hybrid' && twoHybrid100.length > minNumOfShots) {
+                return shotWeightedAverage(twoHybrid100);
             }
-            else if (item.value === '3hybrid' && threeHybrid100.length > 0) {
-                const shotAverage100 = threeHybrid100[0]
-                return shotAverage100
+            else if (item.value === '3hybrid' && threeHybrid100.length > minNumOfShots) {
+                return shotWeightedAverage(threeHybrid100);
             }
-            else if (item.value === '4hybrid' && fourHybrid100.length > 0) {
-                const shotAverage100 = fourHybrid100[0]
-                return shotAverage100
+            else if (item.value === '4hybrid' && fourHybrid100.length > minNumOfShots) {
+                return shotWeightedAverage(fourHybrid100);
             }
-            else if (item.value === '5hybrid' && fiveHybrid100.length > 0) {
-                const shotAverage100 = fiveHybrid100[0]
-                return shotAverage100
+            else if (item.value === '5hybrid' && fiveHybrid100.length > minNumOfShots) {
+                return shotWeightedAverage(fiveHybrid100);
             }
-            else if (item.value === '6hybrid' && sixHybrid100.length > 0) {
-                const shotAverage100 = sixHybrid100[0]
-                return shotAverage100
+            else if (item.value === '6hybrid' && sixHybrid100.length > minNumOfShots) {
+                return shotWeightedAverage(sixHybrid100);
             }
-            else if (item.value === '7hybrid' && sevenHybrid100.length > 0) {
-                const shotAverage100 = sevenHybrid100[0]
-                return shotAverage100
+            else if (item.value === '7hybrid' && sevenHybrid100.length > minNumOfShots) {
+                return shotWeightedAverage(sevenHybrid100);
             }
             // Irons
-            else if (item.value === '2Iron' && twoIron100.length > 0) {
-                const shotAverage100 = twoIron100[0]
-                return shotAverage100
+            else if (item.value === '2Iron' && twoIron100.length > minNumOfShots) {
+                return shotWeightedAverage(twoIron100);
             }
-            else if (item.value === '3Iron' && threeIron100.length > 0) {
-                const shotAverage100 = threeIron100[0]
-                return shotAverage100
+            else if (item.value === '3Iron' && threeIron100.length > minNumOfShots) {
+                return shotWeightedAverage(threeIron100);
             }
-            else if (item.value === '4Iron' && fourIron100.length > 0) {
-                const shotAverage100 = fourIron100[0]
-                return shotAverage100
+            else if (item.value === '4Iron' && fourIron100.length > minNumOfShots) {
+                return shotWeightedAverage(fourIron100);
             }
-            else if (item.value === '5Iron' && fiveIron100.length > 0) {
-                const shotAverage100 = fiveIron100[0]
-                return shotAverage100
+            else if (item.value === '5Iron' && fiveIron100.length > minNumOfShots) {
+                return shotWeightedAverage(fiveIron100);
             }
-            else if (item.value === '6Iron' && sixIron100.length > 0) {
-                const shotAverage100 = sixIron100[0]
-                return shotAverage100
+            else if (item.value === '6Iron' && sixIron100.length > minNumOfShots) {
+                return shotWeightedAverage(sixIron100);
             }
-            else if (item.value === '7Iron' && sevenIron100.length > 0) {
-                const shotAverage100 = sevenIron100[0]
-                return shotAverage100
+            else if (item.value === '7Iron' && sevenIron100.length > minNumOfShots) {
+                return shotWeightedAverage(sevenIron100);
             }
-            else if (item.value === '8Iron' && eightIron100.length > 0) {
-                const shotAverage100 = eightIron100[0]
-                return shotAverage100
+            else if (item.value === '8Iron' && eightIron100.length > minNumOfShots) {
+                return shotWeightedAverage(eightIron100);
             }
-            else if (item.value === '9Iron' && nineIron100.length > 0) {
-                const shotAverage100 = nineIron100[0]
-                return shotAverage100
+            else if (item.value === '9Iron' && nineIron100.length > minNumOfShots) {
+                return shotWeightedAverage(nineIron100);
             }
             // Wedge 
-            else if (item.value === 'Pwedge' && pWedge100.length > 0) {
-                const shotAverage100 = pWedge100[0]
-                return shotAverage100
+            else if (item.value === 'Pwedge' && pWedge100.length > minNumOfShots) {
+                return shotWeightedAverage(pWedge100);
             }
-            else if (item.value === '48wedge' && forty8Wedge100.length > 0) {
-                const shotAverage100 = forty8Wedge100[0]
-                return shotAverage100
+            else if (item.value === '48wedge' && forty8Wedge100.length > minNumOfShots) {
+                return shotWeightedAverage(forty8Wedge100);
             }
-            else if (item.value === '50wedge' && fiftyWedge100.length > 0) {
-                const shotAverage100 = fiftyWedge100[0]
-                return shotAverage100
+            else if (item.value === '50wedge' && fiftyWedge100.length > minNumOfShots) {
+                return shotWeightedAverage(fiftyWedge100);
             }
-            else if (item.value === '52wedge' && fifty2Wedge100.length > 0) {
-                const shotAverage100 = fifty2Wedge100[0]
-                return shotAverage100
+            else if (item.value === '52wedge' && fifty2Wedge100.length > minNumOfShots) {
+                return shotWeightedAverage(fifty2Wedge100);
             }
-            else if (item.value === '54wedge' && fifty4Wedge100.length > 0) {
-                const shotAverage100 = fifty4Wedge100[0]
-                return shotAverage100
+            else if (item.value === '54wedge' && fifty4Wedge100.length > minNumOfShots) {
+                return shotWeightedAverage(fifty4Wedge100);
             }
-            else if (item.value === '56wedge' && fifty6Wedge100.length > 0) {
-                const shotAverage100 = fifty6Wedge100[0]
-                return shotAverage100
+            else if (item.value === '56wedge' && fifty6Wedge100.length > minNumOfShots) {
+                return shotWeightedAverage(fifty6Wedge100);
             }
-            else if (item.value === '58wedge' && fifty8Wedge100.length > 0) {
-                const shotAverage100 = fifty8Wedge100[0]
-                return shotAverage100
+            else if (item.value === '58wedge' && fifty8Wedge100.length > minNumOfShots) {
+                return shotWeightedAverage(fifty8Wedge100)
             }
-            else if (item.value === '60wedge' && sixtyWedge100.length > 0) {
-                const shotAverage100 = sixtyWedge100[0]
-                return shotAverage100
+            else if (item.value === '60wedge' && sixtyWedge100.length > minNumOfShots) {
+                return shotWeightedAverage(sixtyWedge100)
             }
             // null
             else {
@@ -504,7 +477,8 @@ const MyBagScreen = ({ navigation,
             return (
                 // <Text key={item.id}>{item.club}</Text>
                 <TouchableOpacity onPress={() => {
-                    console.log(`Pressed ${item.club} & ${item.value}`)
+                    console.log(`Pressed ${item.club} & ${item.value}`);
+                    openExpandedShotView();
                 }
                 }
                 >
@@ -546,6 +520,27 @@ const MyBagScreen = ({ navigation,
                                 </View>
                             </View>
                         </View>
+                        {openExpandedView ?
+
+                            (
+                                <View style={{ alignItems: 'center', }}>
+                                    <View style={{}}>
+                                        <Text>Testing</Text>
+                                        {/* <ButtonGroup>
+                                            <Button onPress={() => setText('Left button pressed')}>
+                                                L
+                                            </Button>
+                                            <Button onPress={() => setText('Middle button pressed')}>
+                                                M
+                                            </Button>
+                                            <Button onPress={() => setText('Right button pressed')}>
+                                                R
+                                            </Button>
+                                        </ButtonGroup> */}
+                                    </View>
+                                </View>
+                            ) : null
+                        }
                     </View>
                 </TouchableOpacity>
             );

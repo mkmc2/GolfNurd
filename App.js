@@ -606,16 +606,70 @@ function HomeTabs() {
     // };
     const shotWeightedAverage = (arrayUsed) => {
         const shotArrayUsed = arrayUsed;
-        const numerator = (shotArrayUsed[0] * 10) + (shotArrayUsed[1] * 10) + (shotArrayUsed[2] * 10) + (shotArrayUsed[3] * 10);
-        const denominator = 10 + 10 + 10 + 10;
+        const numerator = (shotArrayUsed[0] * 10) + (shotArrayUsed[1] * 10) + (shotArrayUsed[2] * 10) + (shotArrayUsed[3] * 10) + (shotArrayUsed[4] * 10);
+        const denominator = 10 + 10 + 10 + 10 + 10;
         return Math.round(numerator / denominator);
     };
-    const shotWeightedAverageTest = ({ driver100 }) => {
-        const shotAverage =
-            ((driver100[0] * 10) + (driver100[1] * 10) + (driver100[2] * 10) + (driver100[3] * 10)) /
-            (10 + 10 + 10 + 10);
-        return shotAverage;
-    }
+    // const shotWeightedAverage1 = (arrayUsed) => {
+    //     const shotArrayUsed = arrayUsed;
+    //     const numerator = (shotArrayUsed[0] * 10) + (shotArrayUsed[1] * 10) + (shotArrayUsed[2] * 10) + (shotArrayUsed[3] * 10) + (shotArrayUsed[4] * 10) + (shotArrayUsed[5] * 10)(shotArrayUsed[6] * 10) + (shotArrayUsed[7] * 10) + (shotArrayUsed[8] * 10) + (shotArrayUsed[9] * 10);
+    //     const denominator = 10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 10;
+    //     return Math.round(numerator / denominator);
+    // };
+    const shotWeightedAverage1 = (arrayUsed) => {
+        const shotArrayUsed = arrayUsed;
+        const numerator =
+            (shotArrayUsed[0] * 10) +
+            (shotArrayUsed[1] * 10) +
+            (shotArrayUsed[2] * 10) +
+            (shotArrayUsed[3] * 10) +
+            (shotArrayUsed[4] * 10) +
+            (shotArrayUsed[5] * 10) +
+            (shotArrayUsed[6] * 10) +
+            (shotArrayUsed[7] * 10) +
+            (shotArrayUsed[8] * 10) +
+            (shotArrayUsed[9] * 10);
+        const denominator = 10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 10;
+        return Math.round(numerator / denominator);
+    };
+    // const shotWeightedAverage2 = (arrayUsed) => {
+    //     const shotArrayUsed = arrayUsed;
+    //     const numerator = ((shotArrayUsed[0] * 10) + (shotArrayUsed[1] * 10) + (shotArrayUsed[2] * 10) + (shotArrayUsed[3] * 10) +
+    //         (shotArrayUsed[4] * 10) + (shotArrayUsed[5] * 10) + (shotArrayUsed[6] * 10) + (shotArrayUsed[7] * 10) +
+    //         (shotArrayUsed[8] * 10) + (shotArrayUsed[9] * 10) + (shotArrayUsed[10] * 10) +
+    //         (shotArrayUsed[11] * 6) + (shotArrayUsed[12] * 6) + (shotArrayUsed[13] * 6) +
+    //         (shotArrayUsed[14] * 6) + (shotArrayUsed[15] * 6) + (shotArrayUsed[16] * 6) +
+    //         (shotArrayUsed[17] * 6) + (shotArrayUsed[18] * 6) + (shotArrayUsed[19] * 6) + (shotArrayUsed[20] * 6)
+    //     )
+    //     const denominator = (10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 6 + 6 + 6 + 6 + 6 + 6 + 6 + 6 + 6 + 6);
+    //     return Math.round(numerator / denominator);
+    // };
+    const shotWeightedAverage2 = (arrayUsed) => {
+        const shotArrayUsed = arrayUsed;
+        const numerator =
+            (shotArrayUsed[0] * 10) +
+            (shotArrayUsed[1] * 10) +
+            (shotArrayUsed[2] * 10) +
+            (shotArrayUsed[3] * 10) +
+            (shotArrayUsed[4] * 10) +
+            (shotArrayUsed[5] * 10) +
+            (shotArrayUsed[6] * 10) +
+            (shotArrayUsed[7] * 10) +
+            (shotArrayUsed[8] * 10) +
+            (shotArrayUsed[9] * 10) +
+            (shotArrayUsed[10] * 6) +
+            (shotArrayUsed[11] * 6) +
+            (shotArrayUsed[12] * 6) +
+            (shotArrayUsed[13] * 6) +
+            (shotArrayUsed[14] * 6) +
+            (shotArrayUsed[15] * 6) +
+            (shotArrayUsed[16] * 6) +
+            (shotArrayUsed[17] * 6) +
+            (shotArrayUsed[18] * 6) +
+            (shotArrayUsed[19] * 6);
+        const denominator = 10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 10 + 6 + 6 + 6 + 6 + 6 + 6 + 6 + 6 + 6 + 6;
+        return Math.round(numerator / denominator);
+    };
 
     const driver100Average = ((driver100[0] + driver100[1] + driver100[2]) / 3)
 
@@ -661,6 +715,8 @@ function HomeTabs() {
                 {(props) => (
                     <MyBagScreen
                         shotWeightedAverage={shotWeightedAverage}
+                        shotWeightedAverage1={shotWeightedAverage1}
+                        shotWeightedAverage2={shotWeightedAverage2}
                         // shotAverages={shotAverages}
                         driver100={driver100}
                         driver75={driver75}

@@ -8,10 +8,10 @@
       "android"
     ],
     "orientation": "portrait",
-    "icon": "./assets/Icon_splash.png",
+    "icon": "./assets/Icon_Splash.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/Icon_splash.png",
+      "image": "./assets/Icon_Splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -28,7 +28,7 @@
       }
     },
     "web": {
-      "favicon": "./assets/Icon_splash.png"
+      "favicon": "./assets/Icon_Splash.png"
     }
   }
 }
